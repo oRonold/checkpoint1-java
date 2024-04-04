@@ -34,9 +34,14 @@ public class Livro {
     @CreatedDate
     private LocalDateTime dataCadastro;
 
+    @Column(name = "ds_genero", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Genero genero;
+
     public Livro(CadastrarLivroDTO dto){
         this.titulo = dto.titulo();
         this.isbn = dto.numeroIsbn();
+        this.genero = dto.genero();
     }
 
     public void atualizar(AtualizarLivroDTO dto){
@@ -45,6 +50,9 @@ public class Livro {
         }
         if(dto.isbn() != null){
             this.isbn = dto.isbn();
+        }
+        if(dto.genero() != null){
+            this.genero = dto.genero();
         }
     }
 
