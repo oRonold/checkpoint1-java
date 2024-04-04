@@ -1,4 +1,4 @@
-package br.com.fiap.livraria.model;
+package br.com.fiap.livraria.model.emprestimo;
 
 public enum StatusEmprestimo {
 
