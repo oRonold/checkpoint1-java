@@ -1,17 +1,18 @@
 package br.com.fiap.livraria.model.livro.dto;
 
+import br.com.fiap.livraria.model.livro.DetalhesLivro;
 import br.com.fiap.livraria.model.livro.Genero;
 import br.com.fiap.livraria.model.livro.Livro;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
-public record DetalhesLivroDTO(Long codigo, String titulo, String numeroIsbn, Genero genero,
-                               @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
-                               LocalDateTime dataCadastro) {
+public record DetalhesLivroDTO(Long codigo, String isbn, String sinopse,
+                               @JsonFormat(pattern = "dd/MM/yyyy")
+                               LocalDate dataPublicacao, Genero genero) {
 
-    public DetalhesLivroDTO(Livro livro){
-        this(livro.getCodigo(), livro.getTitulo(), livro.getIsbn(), livro.getGenero(), livro.getDataCadastro());
+    public DetalhesLivroDTO(DetalhesLivro detalhesLivro){
+        this(detalhesLivro.getCodigo(), detalhesLivro.getIsbn(), detalhesLivro.getSinopse(), detalhesLivro.getDataPublicacao(), detalhesLivro.getGenero());
     }
 
 }

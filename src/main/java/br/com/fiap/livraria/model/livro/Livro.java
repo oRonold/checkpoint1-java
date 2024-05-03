@@ -1,5 +1,6 @@
 package br.com.fiap.livraria.model.livro;
 
+import br.com.fiap.livraria.model.editora.Editora;
 import br.com.fiap.livraria.model.livro.dto.AtualizarLivroDTO;
 import br.com.fiap.livraria.model.livro.dto.CadastrarLivroDTO;
 import jakarta.persistence.*;
@@ -27,33 +28,29 @@ public class Livro {
     @Column(name = "nm_titulo", length = 100, nullable = false)
     private String titulo;
 
-    @Column(name = "nr_isbn", length = 30, nullable = false, unique = true)
-    private String isbn;
-
     @Column(name = "dt_cadastro", nullable = false)
     @CreatedDate
     private LocalDateTime dataCadastro;
 
-    @Column(name = "ds_genero", nullable = false)
-    @Enumerated(EnumType.STRING)
-    private Genero genero;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "cd_detalhes_livro", nullable = false)
+    private DetalhesLivro detalhesLivro;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "cd_editora", nullable = false)
+    private Editora editora;
 
     public Livro(CadastrarLivroDTO dto){
         this.titulo = dto.titulo();
-        this.isbn = dto.numeroIsbn();
-        this.genero = dto.genero();
+        detalhesLivro = new DetalhesLivro(dto);
+        detalhesLivro.setLivro(this);
     }
 
     public void atualizar(AtualizarLivroDTO dto){
         if(dto.titulo() != null){
             this.titulo = dto.titulo();
         }
-        if(dto.isbn() != null){
-            this.isbn = dto.isbn();
-        }
-        if(dto.genero() != null){
-            this.genero = dto.genero();
-        }
+        detalhesLivro.atualizar(dto);
     }
 
 }

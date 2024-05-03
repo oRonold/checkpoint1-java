@@ -2,10 +2,13 @@ package br.com.fiap.livraria.model.editora;
 
 import br.com.fiap.livraria.model.editora.dto.AtualizarEditoraDTO;
 import br.com.fiap.livraria.model.editora.dto.CadastrarEditoraDTO;
+import br.com.fiap.livraria.model.livro.Livro;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -32,6 +35,9 @@ public class Editora {
     @Column(name = "tp_categoria", nullable = false)
     @Enumerated(EnumType.STRING)
     private CategoriaEditora categoria;
+
+    @OneToMany(mappedBy = "editora", cascade = CascadeType.ALL)
+    private List<Livro> livro;
 
     public Editora(CadastrarEditoraDTO dto){
         this.nome = dto.nome();
