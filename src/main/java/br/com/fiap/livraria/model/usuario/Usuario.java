@@ -1,6 +1,7 @@
 package br.com.fiap.livraria.model.usuario;
 
 import br.com.fiap.livraria.model.emprestimo.Emprestimo;
+import br.com.fiap.livraria.model.emprestimo.StatusEmprestimo;
 import br.com.fiap.livraria.model.emprestimo.dto.CriarEmprestimoDTO;
 import br.com.fiap.livraria.model.usuario.dto.AtualizarUsuarioDTO;
 import br.com.fiap.livraria.model.usuario.dto.CadastrarUsuarioDTO;
@@ -47,6 +48,7 @@ public class Usuario {
     public Emprestimo criarEmprestimo(CriarEmprestimoDTO dto){
         var emprestimo = new Emprestimo(dto);
         emprestimo.setUsuario(this);
+        emprestimo.setStatus(StatusEmprestimo.valueOf("EMPRESTADO"));
         return emprestimo;
     }
 

@@ -13,7 +13,5 @@ public record CriarEmprestimoDTO(
         Long idUSuario,
         @NotNull
         @Future
-        LocalDate dataDevolucao,
-        @NotNull
-        StatusEmprestimo status) {
+        LocalDate dataDevolucao) {
 }

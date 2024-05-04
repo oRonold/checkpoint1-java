@@ -46,12 +46,11 @@ public class Emprestimo {
 
     public Emprestimo(CriarEmprestimoDTO dto){
         this.dataDevolucao = dto.dataDevolucao();
-        this.status = dto.status();
     }
 
     public void atualizar(AtualizarEmprestimoDTO dto){
-        if(dto.status() != null){
-            this.status = dto.status();
+        if(dto.dataDevolucao() != null){
+            this.dataDevolucao = dto.dataDevolucao();
         }
     }
 

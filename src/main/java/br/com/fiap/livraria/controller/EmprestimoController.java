@@ -3,6 +3,7 @@ package br.com.fiap.livraria.controller;
 import br.com.fiap.livraria.model.autor.dto.ListagemAutorDTO;
 import br.com.fiap.livraria.model.autor.dto.ListagemUsuarioDTO;
 import br.com.fiap.livraria.model.emprestimo.Emprestimo;
+import br.com.fiap.livraria.model.emprestimo.StatusEmprestimo;
 import br.com.fiap.livraria.model.emprestimo.dto.*;
 import br.com.fiap.livraria.repository.EmprestimoRepository;
 import br.com.fiap.livraria.repository.UsuarioRepository;
@@ -28,13 +29,13 @@ public class EmprestimoController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity<DetalhesEmprestimoDTO> criar(@RequestBody @Valid CriarEmprestimoDTO dto, UriComponentsBuilder builder){
+    public ResponseEntity<DetalhesEmprestimoUsuarioDTO> criar(@RequestBody @Valid CriarEmprestimoDTO dto, UriComponentsBuilder builder){
         var usuario = usuarioRepository.getReferenceById(dto.idUSuario());
         var emprestimo = usuario.criarEmprestimo(dto);
         usuarioRepository.save(usuario);
         repository.save(emprestimo);
         var uri = builder.path("/{id}").buildAndExpand(emprestimo.getCodigo()).toUri();
-        return ResponseEntity.created(uri).body(new DetalhesEmprestimoDTO(emprestimo));
+        return ResponseEntity.created(uri).body(new DetalhesEmprestimoUsuarioDTO(emprestimo));
     }
 
     @GetMapping
@@ -49,19 +50,19 @@ public class EmprestimoController {
         return ResponseEntity.ok().body(new DetalhesEmprestimoUsuarioDTO(emprestimo));
     }
 
-    @PutMapping
+    @PutMapping("/{id}")
     @Transactional
-    public ResponseEntity<DetalhesEmprestimoDTO> atualizar(@RequestBody AtualizarEmprestimoDTO dto){
-        var emprestimo = repository.getReferenceById(dto.codigo());
+    public ResponseEntity<DetalhesEmprestimoDTO> atualizar(@PathVariable Long id, @RequestBody @Valid AtualizarEmprestimoDTO dto){
+        var emprestimo = repository.getReferenceById(id);
         emprestimo.atualizar(dto);
         return ResponseEntity.ok().body(new DetalhesEmprestimoDTO(emprestimo));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{id}/usuarios")
     @Transactional
-    public ResponseEntity<Void> excluir(@PathVariable Long id){
+    public ResponseEntity<Void> emprestimoDevolvido(@PathVariable Long id){
         var emprestimo = repository.getReferenceById(id);
-        repository.deleteById(emprestimo.getCodigo());
+        emprestimo.setStatus(StatusEmprestimo.valueOf("DEVOLVIDO"));
         return ResponseEntity.noContent().build();
     }
 
