@@ -4,7 +4,9 @@ import br.com.fiap.livraria.model.editora.Editora;
 import br.com.fiap.livraria.model.editora.dto.AtualizarEditoraDTO;
 import br.com.fiap.livraria.model.editora.dto.CadastrarEditoraDTO;
 import br.com.fiap.livraria.model.editora.dto.DetalhesEditoraDTO;
+import br.com.fiap.livraria.model.editora.dto.ListagemEditoraDTO;
 import br.com.fiap.livraria.repository.EditoraRepository;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
-@RequestMapping("/editora")
+@RequestMapping("/editoras")
 public class EditoraController {
 
     @Autowired
@@ -31,8 +33,8 @@ public class EditoraController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<DetalhesEditoraDTO>> listar(@PageableDefault(sort = {"nome"}) Pageable pageable){
-        var page = repository.findAll(pageable).map(DetalhesEditoraDTO::new);
+    public ResponseEntity<Page<ListagemEditoraDTO>> listar(@PageableDefault(sort = {"nome"}) Pageable pageable){
+        var page = repository.findAll(pageable).map(ListagemEditoraDTO::new);
         return ResponseEntity.ok(page);
     }
 
@@ -42,10 +44,10 @@ public class EditoraController {
         return ResponseEntity.ok().body(new DetalhesEditoraDTO(editora));
     }
 
-    @PutMapping
+    @PutMapping("/{id}")
     @Transactional
-    public ResponseEntity<DetalhesEditoraDTO> atualizar(@RequestBody AtualizarEditoraDTO dto){
-        var editora = repository.getReferenceById(dto.codigo());
+    public ResponseEntity<DetalhesEditoraDTO> atualizar(@PathVariable Long id, @RequestBody @Valid AtualizarEditoraDTO dto){
+        var editora = repository.getReferenceById(id);
         editora.atualizarInformacoes(dto);
         return ResponseEntity.ok().body(new DetalhesEditoraDTO(editora));
     }
@@ -54,7 +56,7 @@ public class EditoraController {
     @Transactional
     public ResponseEntity<Void> excluir(@PathVariable Long id){
         var editora = repository.getReferenceById(id);
-        repository.deleteById(editora.getCodigo());
+        repository.delete(editora);
         return ResponseEntity.noContent().build();
     }
 

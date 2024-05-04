@@ -48,17 +48,8 @@ public class DetalhesLivro {
     }
 
     public void atualizar(AtualizarLivroDTO dto){
-        if(dto.numeroIsbn() != null){
-            this.isbn = dto.numeroIsbn();
-        }
         if(dto.sinopse() != null){
             this.sinopse = dto.sinopse();
-        }
-        if(dto.dataPublicacao() != null){
-            this.dataPublicacao = dto.dataPublicacao();
-        }
-        if(dto.genero() != null){
-            this.genero = dto.genero();
         }
     }
 

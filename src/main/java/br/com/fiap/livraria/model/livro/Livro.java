@@ -6,6 +6,7 @@ import br.com.fiap.livraria.model.livro.dto.CadastrarLivroDTO;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
@@ -13,6 +14,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import java.time.LocalDateTime;
 
 @Getter
+@Setter
 @NoArgsConstructor
 
 @Entity
@@ -37,7 +39,7 @@ public class Livro {
     private DetalhesLivro detalhesLivro;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "cd_editora", nullable = false)
+    @JoinColumn(name = "cd_editora")
     private Editora editora;
 
     public Livro(CadastrarLivroDTO dto){

@@ -10,10 +10,6 @@ import java.time.LocalDate;
 public record AtualizarLivroDTO(
         @Size(max = 100)
         String titulo,
-        @Size(max = 13)
-        String numeroIsbn,
         @Size(max = 100)
-        String sinopse,
-        LocalDate dataPublicacao,
-        Genero genero) {
+        String sinopse) {
 }

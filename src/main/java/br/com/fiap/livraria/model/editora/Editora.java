@@ -6,11 +6,13 @@ import br.com.fiap.livraria.model.livro.Livro;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.util.List;
 
 @Getter
+@Setter
 @NoArgsConstructor
 
 @Entity
@@ -36,7 +38,7 @@ public class Editora {
     @Enumerated(EnumType.STRING)
     private CategoriaEditora categoria;
 
-    @OneToMany(mappedBy = "editora", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "editora")
     private List<Livro> livro;
 
     public Editora(CadastrarEditoraDTO dto){

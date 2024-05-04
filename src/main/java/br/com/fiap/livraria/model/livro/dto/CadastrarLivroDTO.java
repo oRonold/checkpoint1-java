@@ -1,10 +1,9 @@
 package br.com.fiap.livraria.model.livro.dto;
 
+import br.com.fiap.livraria.model.editora.CategoriaEditora;
+import br.com.fiap.livraria.model.editora.dto.CadastrarEditoraDTO;
 import br.com.fiap.livraria.model.livro.Genero;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 
 import java.time.LocalDate;
 
