@@ -38,7 +38,7 @@ public class Editora {
     @Enumerated(EnumType.STRING)
     private CategoriaEditora categoria;
 
-    @OneToMany(mappedBy = "editora")
+    @OneToMany(mappedBy = "editora", cascade = CascadeType.ALL)
     private List<Livro> livro;
 
     public Editora(CadastrarEditoraDTO dto){

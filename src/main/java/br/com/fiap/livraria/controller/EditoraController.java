@@ -6,6 +6,7 @@ import br.com.fiap.livraria.model.editora.dto.CadastrarEditoraDTO;
 import br.com.fiap.livraria.model.editora.dto.DetalhesEditoraDTO;
 import br.com.fiap.livraria.model.editora.dto.ListagemEditoraDTO;
 import br.com.fiap.livraria.repository.EditoraRepository;
+import br.com.fiap.livraria.repository.LivroRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -22,6 +23,9 @@ public class EditoraController {
 
     @Autowired
     private EditoraRepository repository;
+
+    @Autowired
+    private LivroRepository livroRepository;
 
     @PostMapping
     @Transactional
@@ -52,11 +56,12 @@ public class EditoraController {
         return ResponseEntity.ok().body(new DetalhesEditoraDTO(editora));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{idLivro}/livros/")
     @Transactional
-    public ResponseEntity<Void> excluir(@PathVariable Long id){
-        var editora = repository.getReferenceById(id);
-        repository.delete(editora);
+    public ResponseEntity<Void> removerLivro(@PathVariable Long idLivro){
+        var livro = livroRepository.getReferenceById(idLivro);
+        livro.setEditora(null);
+        livroRepository.save(livro);
         return ResponseEntity.noContent().build();
     }
 

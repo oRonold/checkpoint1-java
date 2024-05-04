@@ -39,7 +39,7 @@ public class Livro {
     @JoinColumn(name = "cd_detalhes_livro", nullable = false)
     private DetalhesLivro detalhesLivro;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "cd_editora")
     private Editora editora;
 
