@@ -2,6 +2,7 @@ package br.com.fiap.livraria.model.autor;
 
 import br.com.fiap.livraria.model.autor.dto.AtualizarAutorDTO;
 import br.com.fiap.livraria.model.autor.dto.CadastrarAutorDTO;
+import br.com.fiap.livraria.model.livro.Livro;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,6 +11,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -40,6 +42,9 @@ public class Autor {
     @Column(name = "dt_nascimento", nullable = false)
     private LocalDate dataNascimento;
 
+    @OneToMany(mappedBy = "autor")
+    private List<Livro> livros;
+
     public Autor(CadastrarAutorDTO dto){
         this.nome = dto.nome();
         this.biografia = dto.biografia();
@@ -56,9 +61,6 @@ public class Autor {
         }
         if(dto.email() != null){
             this.email = dto.email();
-        }
-        if(dto.dataNascimento() != null){
-            this.dataNascimento = dto.dataNascimento();
         }
     }
 

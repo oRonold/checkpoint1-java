@@ -1,5 +1,6 @@
 package br.com.fiap.livraria.model.livro;
 
+import br.com.fiap.livraria.model.autor.Autor;
 import br.com.fiap.livraria.model.editora.Editora;
 import br.com.fiap.livraria.model.livro.dto.AtualizarLivroDTO;
 import br.com.fiap.livraria.model.livro.dto.CadastrarLivroDTO;
@@ -38,9 +39,13 @@ public class Livro {
     @JoinColumn(name = "cd_detalhes_livro", nullable = false)
     private DetalhesLivro detalhesLivro;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "cd_editora")
     private Editora editora;
+
+    @ManyToOne
+    @JoinColumn(name = "cd_autor")
+    private Autor autor;
 
     public Livro(CadastrarLivroDTO dto){
         this.titulo = dto.titulo();
