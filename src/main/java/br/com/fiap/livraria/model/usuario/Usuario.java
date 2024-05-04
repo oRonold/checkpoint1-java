@@ -1,16 +1,24 @@
 package br.com.fiap.livraria.model.usuario;
 
+import br.com.fiap.livraria.model.emprestimo.Emprestimo;
+import br.com.fiap.livraria.model.emprestimo.dto.CriarEmprestimoDTO;
 import br.com.fiap.livraria.model.usuario.dto.AtualizarUsuarioDTO;
 import br.com.fiap.livraria.model.usuario.dto.CadastrarUsuarioDTO;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import java.util.List;
 
 @Getter
+@Setter
 @NoArgsConstructor
 
 @Entity
 @Table(name = "jv_tb_usuario")
+@EntityListeners(AuditingEntityListener.class)
 public class Usuario {
 
     @Id
@@ -27,10 +35,19 @@ public class Usuario {
     @Column(name = "ds_senha", length = 10, nullable = false, unique = true)
     private String senha;
 
+    @OneToMany(mappedBy = "usuario")
+    private List<Emprestimo> emprestimos;
+
     public Usuario(CadastrarUsuarioDTO dto) {
         this.nome = dto.nome();
         this.email = dto.email();
         this.senha = dto.senha();
+    }
+
+    public Emprestimo criarEmprestimo(CriarEmprestimoDTO dto){
+        var emprestimo = new Emprestimo(dto);
+        emprestimo.setUsuario(this);
+        return emprestimo;
     }
 
     public void atualizar(AtualizarUsuarioDTO dto){

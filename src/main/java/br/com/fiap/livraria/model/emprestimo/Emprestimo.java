@@ -2,20 +2,26 @@ package br.com.fiap.livraria.model.emprestimo;
 
 import br.com.fiap.livraria.model.emprestimo.dto.AtualizarEmprestimoDTO;
 import br.com.fiap.livraria.model.emprestimo.dto.CriarEmprestimoDTO;
+import br.com.fiap.livraria.model.usuario.Usuario;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.cglib.core.Local;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
+@Setter
 @NoArgsConstructor
 
 @Entity
 @Table(name = "jv_tb_emprestimo")
+@EntityListeners(AuditingEntityListener.class)
 public class Emprestimo {
 
     @Id
@@ -24,6 +30,7 @@ public class Emprestimo {
     private Long codigo;
 
     @Column(name = "dt_emprestimo", nullable = false)
+    @CreatedDate
     private LocalDate dataEmprestimo;
 
     @Column(name = "dt_devolucao", nullable = false)
@@ -33,8 +40,11 @@ public class Emprestimo {
     @Enumerated(EnumType.STRING)
     private StatusEmprestimo status;
 
+    @ManyToOne
+    @JoinColumn(name = "cd_usuario")
+    private Usuario usuario;
+
     public Emprestimo(CriarEmprestimoDTO dto){
-        this.dataEmprestimo = dto.dataEmprestimo();
         this.dataDevolucao = dto.dataDevolucao();
         this.status = dto.status();
     }

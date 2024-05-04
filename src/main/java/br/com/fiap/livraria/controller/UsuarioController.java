@@ -1,5 +1,6 @@
 package br.com.fiap.livraria.controller;
 
+import br.com.fiap.livraria.model.autor.dto.ListagemUsuarioDTO;
 import br.com.fiap.livraria.model.usuario.Usuario;
 import br.com.fiap.livraria.model.usuario.dto.AtualizarUsuarioDTO;
 import br.com.fiap.livraria.model.usuario.dto.CadastrarUsuarioDTO;
@@ -31,8 +32,8 @@ public class UsuarioController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<DetalhesUsuarioDTO>> listar(@PageableDefault(sort = {"nome"}) Pageable pageable){
-        var page = repository.findAll(pageable).map(DetalhesUsuarioDTO::new);
+    public ResponseEntity<Page<ListagemUsuarioDTO>> listar(@PageableDefault(sort = {"nome"}) Pageable pageable){
+        var page = repository.findAll(pageable).map(ListagemUsuarioDTO::new);
         return ResponseEntity.ok(page);
     }
 

@@ -9,9 +9,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public record CriarEmprestimoDTO(
-        @NotBlank
-        LocalDate dataEmprestimo,
-        @NotBlank
+        @NotNull
+        Long idUSuario,
+        @NotNull
         @Future
         LocalDate dataDevolucao,
         @NotNull
