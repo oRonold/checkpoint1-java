@@ -1,11 +1,12 @@
 package br.com.fiap.livraria.controller;
 
-import br.com.fiap.livraria.model.autor.dto.ListagemUsuarioDTO;
+import br.com.fiap.livraria.model.usuario.dto.ListagemUsuarioDTO;
 import br.com.fiap.livraria.model.usuario.Usuario;
 import br.com.fiap.livraria.model.usuario.dto.AtualizarUsuarioDTO;
 import br.com.fiap.livraria.model.usuario.dto.CadastrarUsuarioDTO;
 import br.com.fiap.livraria.model.usuario.dto.DetalhesUsuarioDTO;
 import br.com.fiap.livraria.repository.UsuarioRepository;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,7 +25,7 @@ public class UsuarioController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity<ListagemUsuarioDTO> cadastrar(@RequestBody CadastrarUsuarioDTO dto, UriComponentsBuilder builder){
+    public ResponseEntity<ListagemUsuarioDTO> cadastrar(@RequestBody @Valid CadastrarUsuarioDTO dto, UriComponentsBuilder builder){
         var usuario = new Usuario(dto);
         repository.save(usuario);
         var uri = builder.path("/{id}").buildAndExpand(usuario.getCodigo()).toUri();
@@ -43,10 +44,10 @@ public class UsuarioController {
         return ResponseEntity.ok().body(new DetalhesUsuarioDTO(usuario));
     }
 
-    @PutMapping
+    @PutMapping("/{id}")
     @Transactional
-    public ResponseEntity<DetalhesUsuarioDTO> atualizar(@RequestBody AtualizarUsuarioDTO dto){
-        var usuario = repository.getReferenceById(dto.codigo());
+    public ResponseEntity<DetalhesUsuarioDTO> atualizar(@PathVariable Long id, @RequestBody @Valid AtualizarUsuarioDTO dto){
+        var usuario = repository.getReferenceById(id);
         usuario.atualizar(dto);
         return ResponseEntity.ok().body(new DetalhesUsuarioDTO(usuario));
     }

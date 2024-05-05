@@ -1,9 +1,14 @@
 package br.com.fiap.livraria.model.usuario.dto;
 
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Size;
 
 public record AtualizarUsuarioDTO(
-        @NotNull
-        Long codigo,
-        String nome, String email, String senha) {
+        @Size(max = 100)
+        String nome,
+        @Size(max = 100)
+        @Email
+        String email,
+        @Size(max = 10)
+        String senha) {
 }

@@ -1,6 +1,6 @@
 package br.com.fiap.livraria.model.emprestimo.dto;
 
-import br.com.fiap.livraria.model.autor.dto.ListagemUsuarioDTO;
+import br.com.fiap.livraria.model.usuario.dto.ListagemUsuarioDTO;
 import br.com.fiap.livraria.model.emprestimo.Emprestimo;
 import br.com.fiap.livraria.model.emprestimo.StatusEmprestimo;
 import br.com.fiap.livraria.model.livro.dto.ListagemLivroDTO;

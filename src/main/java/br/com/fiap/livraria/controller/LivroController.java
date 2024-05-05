@@ -82,6 +82,12 @@ public class LivroController {
     @Transactional
     public ResponseEntity<Void> excluir(@PathVariable Long id){
         var livro = livroRepository.getReferenceById(id);
+        var editora = editoraRepository.getReferenceById(livro.getEditora().getCodigo());
+
+        editora.getLivro().remove(livro);
+        var autor = autorRepository.getReferenceById(livro.getAutor().getCodigo());
+        autor.getLivros().remove(livro);
+
         livroRepository.delete(livro);
         return ResponseEntity.noContent().build();
     }

@@ -1,14 +1,18 @@
 package br.com.fiap.livraria.model.usuario.dto;
 
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 
 public record CadastrarUsuarioDTO(
-        @NotBlank
+        @NotEmpty
+        @Size(max = 100)
         String nome,
-        @NotBlank
+        @Size(max = 100)
+        @NotEmpty
         @Email
         String email,
-        @NotBlank
+        @Size(max = 10)
+        @NotEmpty
         String senha) {
 }

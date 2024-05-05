@@ -1,4 +1,4 @@
-package br.com.fiap.livraria.model.autor.dto;
+package br.com.fiap.livraria.model.usuario.dto;
 
 import br.com.fiap.livraria.model.usuario.Usuario;
 

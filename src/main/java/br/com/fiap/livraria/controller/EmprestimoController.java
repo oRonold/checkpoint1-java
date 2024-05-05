@@ -1,13 +1,8 @@
 package br.com.fiap.livraria.controller;
 
-import br.com.fiap.livraria.model.autor.dto.ListagemAutorDTO;
-import br.com.fiap.livraria.model.autor.dto.ListagemUsuarioDTO;
-import br.com.fiap.livraria.model.emprestimo.Emprestimo;
 import br.com.fiap.livraria.model.emprestimo.StatusEmprestimo;
 import br.com.fiap.livraria.model.emprestimo.dto.*;
 import br.com.fiap.livraria.repository.EmprestimoRepository;
-import br.com.fiap.livraria.repository.LivroRepository;
-import br.com.fiap.livraria.repository.UsuarioRepository;
 import br.com.fiap.livraria.service.EmprestimoLivroService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,10 +47,10 @@ public class EmprestimoController {
 
     @PutMapping("/{id}")
     @Transactional
-    public ResponseEntity<DetalhesEmprestimoDTO> atualizar(@PathVariable Long id, @RequestBody @Valid AtualizarEmprestimoDTO dto){
+    public ResponseEntity<DetalhesEmprestimoUsuarioDTO> atualizar(@PathVariable Long id, @RequestBody @Valid AtualizarEmprestimoDTO dto){
         var emprestimo = repository.getReferenceById(id);
         emprestimo.atualizar(dto);
-        return ResponseEntity.ok().body(new DetalhesEmprestimoDTO(emprestimo));
+        return ResponseEntity.ok().body(new DetalhesEmprestimoUsuarioDTO(emprestimo));
     }
 
     @PutMapping("/{idEmprestimo}/livro/{idLivro}")

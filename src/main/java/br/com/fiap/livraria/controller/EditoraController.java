@@ -29,11 +29,11 @@ public class EditoraController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity<DetalhesEditoraDTO> cadastrar(@RequestBody CadastrarEditoraDTO dto, UriComponentsBuilder builder){
+    public ResponseEntity<ListagemEditoraDTO> cadastrar(@RequestBody CadastrarEditoraDTO dto, UriComponentsBuilder builder){
         var editora = new Editora(dto);
         repository.save(editora);
         var uri = builder.path("/{id}").buildAndExpand(editora.getCodigo()).toUri();
-        return ResponseEntity.created(uri).body(new DetalhesEditoraDTO(editora));
+        return ResponseEntity.created(uri).body(new ListagemEditoraDTO(editora));
     }
 
     @GetMapping
