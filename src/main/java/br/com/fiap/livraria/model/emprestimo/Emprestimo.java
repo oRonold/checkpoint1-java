@@ -48,7 +48,7 @@ public class Emprestimo {
         inverseJoinColumns = @JoinColumn(name = "cd_livro"))
     private List<Livro> livros;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "cd_usuario")
     private Usuario usuario;
 
