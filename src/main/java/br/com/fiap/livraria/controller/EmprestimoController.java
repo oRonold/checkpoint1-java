@@ -6,7 +6,9 @@ import br.com.fiap.livraria.model.emprestimo.Emprestimo;
 import br.com.fiap.livraria.model.emprestimo.StatusEmprestimo;
 import br.com.fiap.livraria.model.emprestimo.dto.*;
 import br.com.fiap.livraria.repository.EmprestimoRepository;
+import br.com.fiap.livraria.repository.LivroRepository;
 import br.com.fiap.livraria.repository.UsuarioRepository;
+import br.com.fiap.livraria.service.EmprestimoLivroService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -25,18 +27,16 @@ public class EmprestimoController {
     private EmprestimoRepository repository;
 
     @Autowired
-    private UsuarioRepository usuarioRepository;
+    private EmprestimoLivroService service;
 
-    @PostMapping
+    @PostMapping("/{idUsuario}/livro/{idLivro}")
     @Transactional
-    public ResponseEntity<DetalhesEmprestimoUsuarioDTO> criar(@RequestBody @Valid CriarEmprestimoDTO dto, UriComponentsBuilder builder){
-        var usuario = usuarioRepository.getReferenceById(dto.idUSuario());
-        var emprestimo = usuario.criarEmprestimo(dto);
-        usuarioRepository.save(usuario);
-        repository.save(emprestimo);
+    public ResponseEntity<DetalhesEmprestimoUsuarioDTO> criar(@PathVariable Long idLivro, @PathVariable Long idUsuario, @RequestBody @Valid CriarEmprestimoDTO dto, UriComponentsBuilder builder){
+        var emprestimo = service.criarEmprestimo(idLivro, idUsuario, dto);
         var uri = builder.path("/{id}").buildAndExpand(emprestimo.getCodigo()).toUri();
         return ResponseEntity.created(uri).body(new DetalhesEmprestimoUsuarioDTO(emprestimo));
     }
+
 
     @GetMapping
     public ResponseEntity<Page<ListagemEmprestimoDTO>> listar(@PageableDefault(sort = {"dataEmprestimo"}) Pageable pageable) {
@@ -58,9 +58,16 @@ public class EmprestimoController {
         return ResponseEntity.ok().body(new DetalhesEmprestimoDTO(emprestimo));
     }
 
-    @DeleteMapping("/{id}/usuarios")
+    @PutMapping("/{idEmprestimo}/livro/{idLivro}")
     @Transactional
-    public ResponseEntity<Void> emprestimoDevolvido(@PathVariable Long id){
+    public ResponseEntity<DetalhesEmprestimoUsuarioDTO> addLivroEmprestimo(@PathVariable Long idEmprestimo, @PathVariable Long idLivro){
+        var emprestimo = service.adicionarMaisLivrosAoEmprestimo(idLivro, idEmprestimo);
+        return ResponseEntity.ok().body(new DetalhesEmprestimoUsuarioDTO(emprestimo));
+    }
+
+    @DeleteMapping("/{id}")
+    @Transactional
+    public ResponseEntity<Void> devolverEmprestimo(@PathVariable Long id){
         var emprestimo = repository.getReferenceById(id);
         emprestimo.setStatus(StatusEmprestimo.valueOf("DEVOLVIDO"));
         return ResponseEntity.noContent().build();

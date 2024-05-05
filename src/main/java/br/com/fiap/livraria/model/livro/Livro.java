@@ -2,6 +2,7 @@ package br.com.fiap.livraria.model.livro;
 
 import br.com.fiap.livraria.model.autor.Autor;
 import br.com.fiap.livraria.model.editora.Editora;
+import br.com.fiap.livraria.model.emprestimo.Emprestimo;
 import br.com.fiap.livraria.model.livro.dto.AtualizarLivroDTO;
 import br.com.fiap.livraria.model.livro.dto.CadastrarLivroDTO;
 import jakarta.persistence.*;
@@ -13,6 +14,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -46,6 +48,9 @@ public class Livro {
     @ManyToOne
     @JoinColumn(name = "cd_autor")
     private Autor autor;
+
+    @ManyToMany(mappedBy = "livros")
+    private List<Emprestimo> emprestimos;
 
     public Livro(CadastrarLivroDTO dto){
         this.titulo = dto.titulo();

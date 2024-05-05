@@ -36,20 +36,13 @@ public class Usuario {
     @Column(name = "ds_senha", length = 10, nullable = false, unique = true)
     private String senha;
 
-    @OneToMany(mappedBy = "usuario")
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
     private List<Emprestimo> emprestimos;
 
     public Usuario(CadastrarUsuarioDTO dto) {
         this.nome = dto.nome();
         this.email = dto.email();
         this.senha = dto.senha();
-    }
-
-    public Emprestimo criarEmprestimo(CriarEmprestimoDTO dto){
-        var emprestimo = new Emprestimo(dto);
-        emprestimo.setUsuario(this);
-        emprestimo.setStatus(StatusEmprestimo.valueOf("EMPRESTADO"));
-        return emprestimo;
     }
 
     public void atualizar(AtualizarUsuarioDTO dto){

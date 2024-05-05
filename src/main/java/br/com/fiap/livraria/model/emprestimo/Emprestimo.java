@@ -2,6 +2,7 @@ package br.com.fiap.livraria.model.emprestimo;
 
 import br.com.fiap.livraria.model.emprestimo.dto.AtualizarEmprestimoDTO;
 import br.com.fiap.livraria.model.emprestimo.dto.CriarEmprestimoDTO;
+import br.com.fiap.livraria.model.livro.Livro;
 import br.com.fiap.livraria.model.usuario.Usuario;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -13,6 +14,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -40,12 +42,19 @@ public class Emprestimo {
     @Enumerated(EnumType.STRING)
     private StatusEmprestimo status;
 
-    @ManyToOne
+    @ManyToMany
+    @JoinTable(name = "jv_tb_livro_emprestimo",
+        joinColumns = @JoinColumn(name = "cd_emprestimo"),
+        inverseJoinColumns = @JoinColumn(name = "cd_livro"))
+    private List<Livro> livros;
+
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "cd_usuario")
     private Usuario usuario;
 
     public Emprestimo(CriarEmprestimoDTO dto){
         this.dataDevolucao = dto.dataDevolucao();
+        this.livros = new ArrayList<>();
     }
 
     public void atualizar(AtualizarEmprestimoDTO dto){
